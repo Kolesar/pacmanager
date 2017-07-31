@@ -1,0 +1,18 @@
+Can't locate object method "new" via package "Gnome2::Vte::Terminal"
+(perhaps you forgot to load "Gnome2::Vte::Terminal"?) at
+/opt/pac/lib/PACTerminal.pm line 500.
+
+
+I solved the problem on my Debian Stretch, perl 5.24:
+1/ Install dependency 
+apt-get install libvte-dev libextutils-depends-perl libextutils-pkgconfig-perl
+2/ Install dh-make-perl
+apt-get install dh-make-perl apt-file
+apt-file update
+3/ Build Vte
+dh-make-perl --cpan Gnome2::Vte --build
+4/ Install the package 
+dpkg -i libgnome2-vte-perl_0.11-1_amd64.deb
+5/ Remove embeded vte library from the pac directory 
+find /opt/pac/ -name "Vte.so*" -exec rm {} \;
+Voila!
